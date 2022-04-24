@@ -1,0 +1,18 @@
+cc = cl
+builddir = build
+
+cflags = -nologo -MT -O2 -permissive- -W3
+lflags = -nologo
+libs = user32.lib kernel32.lib dwmapi.lib
+
+rule cc
+    command = $cc -showIncludes $cflags -c $in -Fo$out
+    description = cc $out
+    deps = msvc
+
+rule link
+    command = link $lflags $in $libs /out:$out
+    description = link $out
+
+build build/wincap.obj: cc wincap.c
+build bin/wincap.exe: link build/wincap.obj
