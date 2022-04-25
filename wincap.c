@@ -36,7 +36,12 @@ struct wincap_config parse_args(int argc, char *argv[])
 {
     struct wincap_config conf;
     conf.process_name = argc > 1 ? argv[1] : "gvim.exe";
-    conf.color = argc > 2 ? strtol(argv[2], NULL, 16) : 0;
+    conf.color = argc > 2 ? strtoul(argv[2], NULL, 16) : 0;
+
+    // RGB to BGR conversion
+    conf.color = ((conf.color & 0xFF0000) >> 16)
+        | (conf.color & 0x00FF00)
+        | ((conf.color & 0x0000FF) << 16);
 
     return conf;
 }
